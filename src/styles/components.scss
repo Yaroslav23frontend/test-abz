@@ -1,0 +1,384 @@
+//Heading
+
+.h1 {
+  @include font-nunito-regular;
+  font-size: 4rem;
+  line-height: 4rem;
+}
+
+//Text
+
+.p {
+  @include font-nunito-regular;
+  @include text-p;
+}
+
+//buttons
+.button-primary {
+  @include font-nunito-regular;
+  @include flex-center;
+  @include text-p;
+  border: none;
+  cursor: pointer;
+  border-radius: 8rem;
+  width: 10rem;
+  height: 3.4rem;
+  background-color: $clor-yellow-primary;
+  &:hover {
+    background-color: $color-yellow-secondary;
+  }
+  &:disabled {
+    color: $color-white;
+    background-color: $color-grey-medium-secondary;
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+}
+//radio-button
+.radio-button {
+  @include flex-center-vertical;
+  gap: 1rem;
+  .form__label-radio {
+    @include font-nunito-regular;
+    @include text-p;
+    cursor: pointer;
+    position: relative;
+    padding-left: 2.5rem;
+  }
+  input {
+    display: none;
+  }
+  .form__radio-button {
+    @include font-nunito-regular;
+    @include text-p;
+    height: 1.6rem;
+    width: 1.6rem;
+    border: 1px solid $color-blue-primary;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: 0.4rem;
+    left: 0;
+  }
+  .form__radio-button::after {
+    content: "";
+    display: block;
+    height: 0.6rem;
+    width: 0.6rem;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $color-blue-primary;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  input:checked ~ .form__label-radio .form__radio-button::after {
+    opacity: 1;
+  }
+}
+sg-replace-icons input[type="radio"]:checked + label:before,
+.sg-replace-icons
+  input[type="radio"]:checked
+  + label
+  span.sg-icon-target:before,
+.sg-replace-icons
+  input[type="checkbox"].sg-input-checkbox:checked
+  + label:before,
+.sg-replace-icons
+  input[type="checkbox"].sg-input-checkbox:checked
+  + label
+  span.sg-icon-target:before {
+  color: #f06586;
+}
+//input
+.input {
+  @include text-p;
+  @include font-nunito-regular;
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+  width: 32.8rem;
+  height: 5.4rem;
+  background-color: $color-grey-light-primary;
+  border: 1px solid $color-grey-light-secondary;
+  border-radius: 4px;
+
+  label {
+    @include font-nunito-regular;
+    font-size: 1.2rem;
+    .error {
+      color: $color-red-error;
+    }
+  }
+  &::placeholder {
+    color: $color-grey-placeholder;
+  }
+  &-error {
+    border: 2px solid $color-red-error;
+  }
+}
+//input upload
+input[type="file"]::file-selector-button {
+  @include font-nunito-regular;
+  @include text-p;
+  visibility: hidden;
+}
+.input-file-container {
+  display: flex;
+  .input {
+    border-left: none;
+    border-top-left-radius: none !important;
+    border-bottom-left-radius: none !important;
+    margin-left: -1.9rem;
+    color: $color-black;
+    width: 24.5rem;
+  }
+  .input-file {
+    @include font-nunito-regular;
+    @include text-p;
+    background-color: $color-white;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    margin-right: 1.6rem;
+    height: 5.4rem;
+    border: 1px solid rgba(0, 0, 0, 0.87);
+    border-radius: 4px 0px 0px 4px;
+    z-index: 1000;
+    width: 8.3rem;
+    position: relative;
+
+    cursor: pointer;
+    &::before {
+      @include center-absolute;
+      content: "Upload";
+      text-align: center;
+      vertical-align: center;
+    }
+    &:hover {
+      background-color: $color-black;
+      color: $color-white;
+    }
+  }
+}
+
+//text-input
+// .textOnInput {
+//   position: relative;
+// }
+// .textOnInput label {
+//   @include font-nunito-regular;
+//   font-size: 1.2rem;
+//   line-height: 1.4rem;
+//   content: " ";
+//   background-color: $color-grey-light-primary;
+//   color: $color-grey-placeholder;
+//   position: absolute;
+//   top: -0.9rem;
+//   padding: 2px;
+//   left: 16px;
+//   z-index: 1;
+// }
+// .textOnInput label:after {
+//   @include font-nunito-regular;
+//   background-color: $color-grey-light-primary;
+//   color: $color-grey-placeholder;
+//   width: 100%;
+//   position: absolute;
+//   left: 0;
+//   bottom: 0;
+//   z-index: -1;
+// }
+// label {
+//   font-size: 16px;
+//   font-weight: 500;
+//   display: inline-block;
+//   margin-bottom: 0.5rem;
+// }
+// .form-control {
+//   box-shadow: none !important;
+// }
+
+//card
+.card-item {
+  width: 28.2rem;
+  padding: 2rem;
+  background-color: $color-white;
+  border-radius: 10px;
+  @media screen and (max-width: 360px) {
+    width: 32.5rem;
+  }
+  @media screen and (max-width: 520px) {
+    width: 40rem;
+  }
+  @media screen and(max-width: 768px) {
+    width: 34.5rem;
+  }
+  @media screen and(max-width: 768px) {
+    width: 34.5rem;
+  }
+  &-img {
+    @include flex-center-horizontal;
+    padding: 2rem;
+  }
+  &-name {
+    @include font-nunito-regular;
+    @include text-p;
+    text-align: center;
+  }
+  @include flex-center-horizontal;
+  flex-direction: column;
+  &-list {
+    @include font-nunito-regular;
+    @include text-p;
+    padding: 2rem;
+    li {
+      text-align: center;
+    }
+  }
+}
+
+//nav
+.nav {
+  height: 6rem;
+  width: 100%;
+  background-color: $color-white;
+  @include flex-center-vertical;
+  gap: 1.4rem;
+  .container {
+    padding-left: 6rem;
+    padding-right: 6rem;
+    @media screen and (max-width: 768px) {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+    @media screen and (max-width: 360px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  .nav-container {
+    @include flex-center-vertical;
+    justify-content: space-between;
+    @media screen and (max-width: 360px) {
+      gap: 1rem;
+    }
+    .nav-log {
+      img {
+        width: 64px;
+        height: auto;
+      }
+    }
+    .nav-list {
+      @include flex-center-vertical;
+      gap: 1rem;
+    }
+  }
+}
+// header
+.header {
+  .container {
+    padding-left: 6rem;
+    padding-right: 6rem;
+    @media screen and (max-width: 1028px) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .header-container {
+      @include flex-center;
+      content: "";
+      width: 100%;
+      min-height: 64.8rem;
+      background-image: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.45) 0%,
+          rgba(0, 0, 0, 0.45) 100%
+        ),
+        url("../img/pexels-alexandr-podvalny-1227513.jpeg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: $color-white;
+      .content {
+        max-width: 45rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+        @media screen and (max-width: 360px) {
+          padding-left: 2rem;
+          padding-right: 2rem;
+        }
+      }
+    }
+  }
+}
+
+//team
+.team-section {
+  &-container {
+    @include flex-center-vertical;
+    @include mtop-section;
+    gap: 5rem;
+    margin-top: 14.5rem;
+    flex-direction: column;
+    h1 {
+      text-align: center;
+    }
+    .card-container {
+      @include flex-center-horizontal;
+      display: grid;
+      grid-template-columns: 282px 282px 282px;
+      justify-items: center;
+      gap: 2rem;
+      @media screen and(max-width: 768px) {
+        grid-template-columns: 34.5rem 34.5rem;
+      }
+      @media screen and (max-width: 520px) {
+        grid-template-columns: 40rem;
+      }
+      @media screen and(max-width: 360px) {
+        grid-template-columns: 32.5rem;
+      }
+    }
+  }
+}
+
+//sign up
+.signup-section {
+  .signup-container {
+    padding: 1rem;
+    h1 {
+      text-align: center;
+    }
+    @include mtop-section;
+    @include flex-center-vertical;
+    margin-bottom: 10rem;
+    flex-direction: column;
+    gap: 5rem;
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4.5rem;
+      .radio-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.success-section {
+  .success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 10rem;
+  }
+}

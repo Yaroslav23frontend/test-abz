@@ -1,0 +1,30 @@
+@mixin center-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin flex-center-horizontal {
+  display: flex;
+  justify-content: center;
+}
+@mixin flex-center-vertical {
+  display: flex;
+  align-items: center;
+}
+@mixin font-nunito-regular {
+  font-family: "Nunito", sans-serif;
+  font-weight: 400;
+}
+@mixin text-p {
+  font-size: 1.6rem;
+  line-height: 2.6rem;
+}
+@mixin mtop-section {
+  margin-top: 14.5rem;
+}
