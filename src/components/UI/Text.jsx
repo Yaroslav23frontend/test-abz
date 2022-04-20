@@ -9,9 +9,9 @@ export default function Text({ variant, children, props }) {
   }
   if (variant === "p") {
     return (
-      <h1 {...props} className="p">
+      <p {...props} className="p">
         {children}
-      </h1>
+      </p>
     );
   }
 }

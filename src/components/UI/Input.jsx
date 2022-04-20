@@ -1,4 +1,5 @@
 import React from "react";
-export default function Input({ styleContainer, ...props }) {
-  return <input {...props} className="form-control input" />;
-}
+const Input = React.forwardRef((props, ref) => {
+  return <input ref={ref} className="form-control input" {...props} />;
+});
+export default Input;

@@ -1,108 +1,138 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { useDataContext } from "./context/DataContext";
+import { usePostContext } from "./context/PostContext";
+
 import Button from "./UI/Button";
 import Input from "./UI/Input";
 import InputFile from "./UI/InputFile";
 import Radio from "./UI/Radio";
 import Text from "./UI/Text";
-import axios from "axios";
+import { KEY, POST_USER_URL } from "./utilites/url";
+import { emailReg, imgReg, nameReg, phoneReg } from "./utilites/validation";
 export default function SignUp() {
-  const [email, setEmail] = useState();
-  const [name, setName] = useState();
-  const [phone, setPhone] = useState();
-  const [img, setImg] = useState();
-  const [position, setPosition] = useState(1);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [img, setImg] = useState({});
   const [imgError, setImgError] = useState(false);
-  const nameRegax = /^.{2,60}$/;
-  const emailRegex =
-    /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
-  const phoneReg = /^[\+]{0,1}380([0-9]{9})$/;
+  const [position, setPosition] = useState(1);
+  const [error, setError] = useState([]);
+  const refEmail = useRef();
+  const refName = useRef();
+  const refPhone = useRef();
+  const { fetchData, setPage } = useDataContext();
+  const { fetchPOST, errorPost } = usePostContext();
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onChangeImg(e) {
-    console.log(e.target.files);
     let img = new Image();
     let blob = URL.createObjectURL(e.target.files[0]);
     img.src = blob;
-    let w = img.innerWidth;
-    let h = img.innerHeight;
     img.onload = function () {
       if (
         e.target.files[0].size > 5000000 ||
-        !/\.(|jpe?g|)$/i.test(e.target.value) ||
+        imgReg.test(e.target.value) ||
         this.width < 70 ||
         this.height < 70
       ) {
-        setImgError(true);
         e.target.classList.add("error-input");
+        setImgError(true);
+        setError([
+          ...error,
+          "User photo should be jpg/jpeg image, with resolution at least 70x70px and size must not exceed 5MB",
+        ]);
       } else {
         e.target.classList.remove("error-input");
       }
     };
-    if (
-      e.target.files[0].size > 5000000 ||
-      !/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(e.target.value) ||
-      w < 70 ||
-      h < 70
-    ) {
-      alert("Max image size 5MB");
-      e.target.classList.add("error-input");
-    } else {
-      e.target.classList.remove("error-input");
-    }
     setImg(e.target.files[0]);
   }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onChangeName(e) {
     const name = e.target;
-    console.log(e.target);
-    if (nameRegax.test(name.value)) {
+    console.log(e.target.value);
+    if (nameReg.test(name.value)) {
       name.classList.remove("error-input");
     } else {
       name.classList.add("error-input");
+      setError([...error, "User name, should be 2-60 characters"]);
     }
     setName(name.value);
   }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onChangeEmail(e) {
     const email = e.target;
-    console.log(e.target);
-    if (emailRegex.test(email.value)) {
+    console.log(e.target.value);
+    if (emailReg.test(email.value)) {
       email.classList.remove("error-input");
     } else {
       email.classList.add("error-input");
+      setError([
+        ...error,
+        "User email, must be a valid email according to RFC2822",
+      ]);
     }
     setEmail(email.value);
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onChangePhone(e) {
+    e.preventDefault();
     const phone = e.target;
     console.log(e.target);
     if (phoneReg.test(phone.value)) {
       phone.classList.remove("error-input");
     } else {
       phone.classList.add("error-input");
+      setError([
+        ...error,
+        "User phone number, should start with code of Ukraine +380",
+      ]);
     }
-    setPhone(phone.value);
+    setPhone(e.target.value);
   }
-  function newPOST(e) {
-    e.preventDefault();
-    const formData = {
-      position_id: position,
-      name: name,
-      email: email,
-      phone: phone,
-      photo: img,
-    };
-    const token =
-      "eyJpdiI6ImlqbkdidzRNWlVidjJTMllHdUNIQ2c9PSIsInZhbHVlIjoiMTNjRGl6aXozVVZ2STlYYW4weHo5ckhoXC9RVzRFZjNiSkVQWGdmT3QzMStzem9hSnlzS01GdmVMRzd5N0pEWE1xZDhJR2xIa3Y2OURrbFhzTzFMMjN3PT0iLCJtYWMiOiIzODEyYmY2ODJmZjkyNzAxMjQ1Njk4ZjY3NWJmYzZhNjQzMmVhNjAxMDM4MmQ2ZjcyN2JlNmUzYzc1YmRlZWYzIn0=";
-    axios
-      .post("https://frontend-test-assignment-api.abz.agency/api/v1/users", {
-        formData,
-        headers: { Token: token },
-      })
-      .then((response) => {
-        console.log(response.status);
-        console.log(response.data.token);
-      });
-  }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onClickPosition(e) {
     setPosition(e.target.value);
   }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  async function signUp(e) {
+    e.preventDefault();
+    const error = [];
+    if (!refEmail.current.value) {
+      refEmail.current.classList.add("error-input");
+      console.log(refEmail);
+      error.push("email");
+    }
+    if (!refPhone.current.value) {
+      refPhone.current.classList.add("error-input");
+      error.push("phone");
+    }
+    if (!refName.current.value) {
+      refName.current.classList.add("error-input");
+      error.push("name");
+    }
+    if (img.name === undefined) {
+      setImgError(true);
+      error.push("img");
+    }
+    if (error.length === 0) {
+      fetchData(1);
+      setPage(1);
+      const data = {
+        position_id: Number(position),
+        name: name,
+        email: email,
+        phone: phone,
+        photo: img,
+      };
+      console.log(data);
+      fetchPOST(data, KEY, POST_USER_URL);
+      if (!errorPost) {
+        fetchData(1);
+        setPage(1);
+      }
+    }
+  }
+
   return (
     <section className="signup-section">
       <div className="container">
@@ -114,24 +144,32 @@ export default function SignUp() {
               type="text"
               placeholder="Name"
               onChange={onChangeName}
+              value={name}
+              ref={refName}
             />
             <Input
               onChange={onChangeEmail}
               name="email"
               type="email"
               placeholder="Email"
+              value={email}
+              ref={refEmail}
             />
             <Input
               onChange={onChangePhone}
               name="phone"
               type="tel"
               placeholder="Phone"
+              value={phone}
+              ref={refPhone}
             />
+            <span>+38 (XXX) XXX - XX - XX</span>
+            {console.log(img.name)}
             <InputFile
               onChange={onChangeImg}
-              accept="image/png, image/gif, image/jpeg"
+              accept="image/jpeg"
               error={imgError}
-              name={img?.name}
+              name={img.name}
             />
             <div className="radio-container">
               <Text variant="p">Select your position:</Text>
@@ -159,7 +197,7 @@ export default function SignUp() {
               />
               <Radio lableText={"QA"} value="4" id="qa" name="job" />
             </div>
-            <Button onClick={newPOST}>Sign up</Button>
+            <Button onClick={signUp}>Sign up</Button>
           </form>
         </div>
       </div>
