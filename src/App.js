@@ -1,7 +1,3 @@
-import Button from "./components/UI/Button";
-import Card from "./components/Card";
-import Input from "./components/UI/Input";
-import InputFile from "./components/UI/InputFile";
 import Nav from "./components/Nav";
 import Header from "./components/Header";
 import Team from "./components/Team";
@@ -12,6 +8,7 @@ function App() {
   return (
     <div className="App">
       <Nav />
+
       <Header />
       <Team />
       <SignUp />

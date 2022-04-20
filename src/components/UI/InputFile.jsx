@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-export default function InputFile({ styleContainer, ...props }) {
+export default function InputFile({ name, error, ...props }) {
   const [file, setFile] = useState("");
   useEffect(() => {
     console.log(file);
@@ -12,15 +12,11 @@ export default function InputFile({ styleContainer, ...props }) {
         placeholder="file"
         id="user_audio"
         type="file"
-        onChange={(e) => {
-          setFile(e.target.value);
-        }}
-        value={file}
       />
       <input
         type="text"
-        className="input"
-        value={file}
+        className={`input ${error ? "error-img" : ""}`}
+        value={name}
         placeholder="Upload your photo"
         disabled
       ></input>

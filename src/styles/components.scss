@@ -7,7 +7,6 @@
 }
 
 //Text
-
 .p {
   @include font-nunito-regular;
   @include text-p;
@@ -93,7 +92,42 @@ sg-replace-icons input[type="radio"]:checked + label:before,
   span.sg-icon-target:before {
   color: #f06586;
 }
+//tooltip
+.tooltip {
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  @include font-nunito-regular;
+  @include text-p;
+  visibility: hidden;
+  width: max-content;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 1rem;
+  display: block;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1000000000;
+  top: 82%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 //input
+.error-input {
+  border: 2px solid $color-red-error !important;
+}
+.error-img {
+  border-bottom: 2px solid $color-red-error !important;
+  border-right: 2px solid $color-red-error !important;
+  border-top: 2px solid $color-red-error !important;
+}
 .input {
   @include text-p;
   @include font-nunito-regular;
@@ -119,6 +153,7 @@ sg-replace-icons input[type="radio"]:checked + label:before,
     border: 2px solid $color-red-error;
   }
 }
+
 //input upload
 input[type="file"]::file-selector-button {
   @include font-nunito-regular;
@@ -148,7 +183,6 @@ input[type="file"]::file-selector-button {
     z-index: 1000;
     width: 8.3rem;
     position: relative;
-
     cursor: pointer;
     &::before {
       @include center-absolute;
@@ -163,49 +197,30 @@ input[type="file"]::file-selector-button {
   }
 }
 
-//text-input
-// .textOnInput {
-//   position: relative;
-// }
-// .textOnInput label {
-//   @include font-nunito-regular;
-//   font-size: 1.2rem;
-//   line-height: 1.4rem;
-//   content: " ";
-//   background-color: $color-grey-light-primary;
-//   color: $color-grey-placeholder;
-//   position: absolute;
-//   top: -0.9rem;
-//   padding: 2px;
-//   left: 16px;
-//   z-index: 1;
-// }
-// .textOnInput label:after {
-//   @include font-nunito-regular;
-//   background-color: $color-grey-light-primary;
-//   color: $color-grey-placeholder;
-//   width: 100%;
-//   position: absolute;
-//   left: 0;
-//   bottom: 0;
-//   z-index: -1;
-// }
-// label {
-//   font-size: 16px;
-//   font-weight: 500;
-//   display: inline-block;
-//   margin-bottom: 0.5rem;
-// }
-// .form-control {
-//   box-shadow: none !important;
-// }
-
+.truncate {
+  width: 24.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media screen and (max-width: 360px) {
+    width: 28.5rem;
+  }
+  @media screen and (max-width: 520px) {
+    width: 36rem;
+  }
+  @media screen and(max-width: 768px) {
+    width: 30.5rem;
+  }
+}
 //card
 .card-item {
   width: 28.2rem;
   padding: 2rem;
   background-color: $color-white;
   border-radius: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  position: relative;
   @media screen and (max-width: 360px) {
     width: 32.5rem;
   }
@@ -215,26 +230,37 @@ input[type="file"]::file-selector-button {
   @media screen and(max-width: 768px) {
     width: 34.5rem;
   }
-  @media screen and(max-width: 768px) {
-    width: 34.5rem;
-  }
+
   &-img {
     @include flex-center-horizontal;
-    padding: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
   &-name {
     @include font-nunito-regular;
     @include text-p;
     text-align: center;
+    position: relative;
   }
   @include flex-center-horizontal;
   flex-direction: column;
   &-list {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
     @include font-nunito-regular;
     @include text-p;
-    padding: 2rem;
+    padding: 2rem 0;
     li {
       text-align: center;
+      a {
+        @include font-nunito-regular;
+        @include text-p;
+        text-decoration: none;
+        color: $color-black;
+        cursor: pointer;
+      }
     }
   }
 }
@@ -333,6 +359,7 @@ input[type="file"]::file-selector-button {
       grid-template-columns: 282px 282px 282px;
       justify-items: center;
       gap: 2rem;
+
       @media screen and(max-width: 768px) {
         grid-template-columns: 34.5rem 34.5rem;
       }
