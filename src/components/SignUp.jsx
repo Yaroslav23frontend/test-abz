@@ -36,7 +36,6 @@ export default function SignUp() {
         : "",
     };
     const stringMs = Object.values(ms).filter((el) => el !== "");
-    console.log(stringMs);
     return stringMs;
   }
   const refEmail = useRef();
@@ -88,7 +87,6 @@ export default function SignUp() {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onChangeName(e) {
     const name = e.target;
-    console.log(e.target.value);
     if (nameReg.test(name.value)) {
       name.classList.remove("error-input");
       setError({ ...error, name: false });
@@ -101,7 +99,6 @@ export default function SignUp() {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onChangeEmail(e) {
     const email = e.target;
-    console.log(e.target.value);
     if (emailReg.test(email.value)) {
       email.classList.remove("error-input");
       setError({ ...error, email: false });
@@ -158,7 +155,6 @@ export default function SignUp() {
         phone: phone,
         photo: img,
       };
-      console.log(data);
       setModalVisible(true);
       fetchPOST(data, KEY, POST_USER_URL);
     } else {

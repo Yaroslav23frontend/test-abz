@@ -14,7 +14,6 @@ export default function PostProivider({ children }) {
     formData.append("email", data.email);
     formData.append("phone", data.phone);
     formData.append("photo", data.photo);
-    console.log(formData);
     fetch(url, {
       method: "POST",
       body: formData,
@@ -28,7 +27,6 @@ export default function PostProivider({ children }) {
         setErrorPost("success");
       })
       .catch(function (err) {
-        console.log(err);
         setErrorPost(err);
       });
   }

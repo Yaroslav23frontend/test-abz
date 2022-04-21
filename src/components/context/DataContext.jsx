@@ -18,7 +18,6 @@ export default function DataProivider({ children }) {
       )
       .then((result) => {
         if (page === 1) {
-          console.log(result.data.users);
           setData(result.data.users);
           if (page !== 1) {
             setPage(1);

@@ -8,7 +8,6 @@ export default function Team() {
   const { fetchData, data, setPage, page, lastPage } = useDataContext();
   useEffect(() => {
     fetchData(page);
-    console.log(page);
   }, []);
 
   return (
@@ -25,7 +24,6 @@ export default function Team() {
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                console.log(lastPage);
                 if (lastPage >= page) {
                   const next = page + 1;
                   fetchData(next);
