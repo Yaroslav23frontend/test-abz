@@ -28,3 +28,17 @@
 @mixin mtop-section {
   margin-top: 14.5rem;
 }
+@mixin button {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  z-index: -1;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 3px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}

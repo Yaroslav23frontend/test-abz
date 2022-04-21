@@ -5,15 +5,15 @@ export function usePostContext() {
   return useContext(PostContext);
 }
 export default function PostProivider({ children }) {
-  const [errorPost, setErrorPost] = useState();
-  const [postResult, setPostResult] = useState();
+  const [errorPost, setErrorPost] = useState("");
+  const [postResult, setPostResult] = useState({});
   function fetchPOST(data, token, url) {
     const formData = new FormData();
-    formData.append("position_id", data.position);
+    formData.append("position_id", data.position_id);
     formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("phone", data.phone);
-    formData.append("photo", data.img);
+    formData.append("photo", data.photo);
     console.log(formData);
     fetch(url, {
       method: "POST",
@@ -25,10 +25,11 @@ export default function PostProivider({ children }) {
       })
       .then(function (data) {
         setPostResult(data);
+        setErrorPost("success");
       })
       .catch(function (err) {
         console.log(err);
-        setErrorPost([...errorPost, ...err]);
+        setErrorPost(err);
       });
   }
   const value = { errorPost, postResult, fetchPOST };

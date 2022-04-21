@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDataContext } from "./context/DataContext";
 import { usePostContext } from "./context/PostContext";
+import ModalWindow from "./Modal";
 
 import Button from "./UI/Button";
 import Input from "./UI/Input";
@@ -10,18 +11,57 @@ import Text from "./UI/Text";
 import { KEY, POST_USER_URL } from "./utilites/url";
 import { emailReg, imgReg, nameReg, phoneReg } from "./utilites/validation";
 export default function SignUp() {
+  //form
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [img, setImg] = useState({});
   const [imgError, setImgError] = useState(false);
   const [position, setPosition] = useState(1);
-  const [error, setError] = useState([]);
+  const [error, setError] = useState({
+    email: true,
+    name: true,
+    phone: true,
+    img: true,
+  });
+  function errorString(error) {
+    let ms = {
+      email: error.email ? "Invalid email" : "",
+      name: error.name ? "user name, should be 2-60 characters" : "",
+      phone: error.phone
+        ? "user phone number, should start with code of Ukraine +380"
+        : "",
+      img: error.img
+        ? "user photo should be jpg/jpeg image, with resolution at least 70x70px and size must not exceed 5MB."
+        : "",
+    };
+    const stringMs = Object.values(ms).filter((el) => el !== "");
+    console.log(stringMs);
+    return stringMs;
+  }
   const refEmail = useRef();
   const refName = useRef();
   const refPhone = useRef();
-  const { fetchData, setPage } = useDataContext();
-  const { fetchPOST, errorPost } = usePostContext();
+  //fetch
+  const { fetchData, setPage, setData } = useDataContext();
+  const { fetchPOST, errorPost, postResult } = usePostContext();
+  //modal
+  const [modalVisible, setModalVisible] = useState(false);
+  const [success, setSuccess] = useState(false);
+  function modalVisibility(data) {
+    setModalVisible(data);
+  }
+  useEffect(() => {
+    if (postResult.success === true) {
+      fetchData(1);
+      setSuccess(true);
+      setModalVisible(true);
+      setTimeout(() => {
+        setSuccess(false);
+        setModalVisible(false);
+      }, 1000);
+    }
+  }, [postResult]);
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function onChangeImg(e) {
     let img = new Image();
@@ -30,18 +70,17 @@ export default function SignUp() {
     img.onload = function () {
       if (
         e.target.files[0].size > 5000000 ||
-        imgReg.test(e.target.value) ||
+        !/\.(|jpe?g|)$/i.test(e.target.value) ||
         this.width < 70 ||
         this.height < 70
       ) {
         e.target.classList.add("error-input");
         setImgError(true);
-        setError([
-          ...error,
-          "User photo should be jpg/jpeg image, with resolution at least 70x70px and size must not exceed 5MB",
-        ]);
+        setError({ ...error, img: true });
       } else {
         e.target.classList.remove("error-input");
+        setError({ ...error, img: false });
+        setImgError(false);
       }
     };
     setImg(e.target.files[0]);
@@ -52,9 +91,10 @@ export default function SignUp() {
     console.log(e.target.value);
     if (nameReg.test(name.value)) {
       name.classList.remove("error-input");
+      setError({ ...error, name: false });
     } else {
       name.classList.add("error-input");
-      setError([...error, "User name, should be 2-60 characters"]);
+      setError({ ...error, name: true });
     }
     setName(name.value);
   }
@@ -64,12 +104,10 @@ export default function SignUp() {
     console.log(e.target.value);
     if (emailReg.test(email.value)) {
       email.classList.remove("error-input");
+      setError({ ...error, email: false });
     } else {
       email.classList.add("error-input");
-      setError([
-        ...error,
-        "User email, must be a valid email according to RFC2822",
-      ]);
+      setError({ ...error, email: true });
     }
     setEmail(email.value);
   }
@@ -77,15 +115,13 @@ export default function SignUp() {
   function onChangePhone(e) {
     e.preventDefault();
     const phone = e.target;
-    console.log(e.target);
+
     if (phoneReg.test(phone.value)) {
       phone.classList.remove("error-input");
+      setError({ ...error, phone: false });
     } else {
       phone.classList.add("error-input");
-      setError([
-        ...error,
-        "User phone number, should start with code of Ukraine +380",
-      ]);
+      setError({ ...error, phone: true });
     }
     setPhone(e.target.value);
   }
@@ -96,27 +132,25 @@ export default function SignUp() {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   async function signUp(e) {
     e.preventDefault();
-    const error = [];
+    let tempError = false;
     if (!refEmail.current.value) {
       refEmail.current.classList.add("error-input");
-      console.log(refEmail);
-      error.push("email");
+      tempError = true;
     }
     if (!refPhone.current.value) {
       refPhone.current.classList.add("error-input");
-      error.push("phone");
+      tempError = true;
     }
     if (!refName.current.value) {
       refName.current.classList.add("error-input");
-      error.push("name");
+      tempError = true;
     }
     if (img.name === undefined) {
       setImgError(true);
-      error.push("img");
+      tempError = true;
     }
-    if (error.length === 0) {
-      fetchData(1);
-      setPage(1);
+
+    if (tempError === false || Object.values(error).indexOf(true) === -1) {
       const data = {
         position_id: Number(position),
         name: name,
@@ -125,11 +159,10 @@ export default function SignUp() {
         photo: img,
       };
       console.log(data);
+      setModalVisible(true);
       fetchPOST(data, KEY, POST_USER_URL);
-      if (!errorPost) {
-        fetchData(1);
-        setPage(1);
-      }
+    } else {
+      setModalVisible(true);
     }
   }
 
@@ -159,12 +192,11 @@ export default function SignUp() {
               onChange={onChangePhone}
               name="phone"
               type="tel"
-              placeholder="Phone"
+              placeholder="+38XXXXXXXXXX"
+              maxLength="13"
               value={phone}
               ref={refPhone}
             />
-            <span>+38 (XXX) XXX - XX - XX</span>
-            {console.log(img.name)}
             <InputFile
               onChange={onChangeImg}
               accept="image/jpeg"
@@ -200,6 +232,16 @@ export default function SignUp() {
             <Button onClick={signUp}>Sign up</Button>
           </form>
         </div>
+        <ModalWindow
+          visible={modalVisible}
+          setModalVisible={modalVisibility}
+          errorMassege={
+            Object.values(error).indexOf(true) === -1
+              ? [postResult.message]
+              : errorString(error)
+          }
+          successMassege={success}
+        />
       </div>
     </section>
   );
