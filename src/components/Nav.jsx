@@ -16,10 +16,22 @@ export default function Nav() {
           </div>
           <ul className="nav-list">
             <li>
-              <Button>Users</Button>
+              <Button
+                onClick={() => {
+                  window.location.href = "#user";
+                }}
+              >
+                Users
+              </Button>
             </li>
             <li>
-              <Button>Sign up</Button>
+              <Button
+                onClick={() => {
+                  window.location.href = "#sign-up";
+                }}
+              >
+                Sign up
+              </Button>
             </li>
           </ul>
         </div>

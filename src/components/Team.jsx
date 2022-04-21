@@ -11,7 +11,7 @@ export default function Team() {
   }, []);
 
   return (
-    <section className="team-section">
+    <section className="team-section" id="user">
       <div className="container">
         <div className="team-section-container">
           <Text variant={"h1"}>Working with GET reguest</Text>

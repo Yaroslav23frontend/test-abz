@@ -15,7 +15,14 @@ export default function Header() {
               accessibility in mind. They should also be excited to learn, as
               the world of Front-end Development keeps evolving
             </Text>
-            <Button> Sign up</Button>
+            <Button
+              onClick={() => {
+                window.location.href = "#sign-up";
+              }}
+            >
+              {" "}
+              Sign up
+            </Button>
           </div>
         </div>
       </div>

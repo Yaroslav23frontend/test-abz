@@ -163,7 +163,7 @@ export default function SignUp() {
   }
 
   return (
-    <section className="signup-section">
+    <section className="signup-section" id="sign-up">
       <div className="container">
         <div className="signup-container">
           <Text variant="h1">Working with POST request</Text>
