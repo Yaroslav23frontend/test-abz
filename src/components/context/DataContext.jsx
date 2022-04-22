@@ -32,6 +32,7 @@ export default function DataProivider({ children }) {
         if (lastPage !== result.data.total_pages) {
           setLastPage(result.data.total_pages);
         }
+        setLoading(false);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
