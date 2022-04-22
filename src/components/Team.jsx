@@ -1,17 +1,36 @@
 import React, { useState, useEffect, Suspense } from "react";
 
 import { useDataContext } from "./context/DataContext";
+import ModalWindow from "./Modal";
 import Spinner from "./Spinner";
 import Button from "./UI/Button";
 import Text from "./UI/Text";
 const Card = React.lazy(() => import("./Card"));
 export default function Team() {
   const [moreButton, setMoreButton] = useState(true);
-  const { fetchData, data, setPage, page, lastPage, loading, setLoading } =
-    useDataContext();
+  const {
+    fetchData,
+    data,
+    setPage,
+    page,
+    lastPage,
+    loading,
+    setLoading,
+    error,
+  } = useDataContext();
+  //modal
+  const [modalVisible, setModalVisible] = useState();
+  function modalVisibility(data) {
+    setModalVisible(data);
+  }
   useEffect(() => {
     fetchData(page);
   }, []);
+  useEffect(() => {
+    if (error.length !== 0) {
+      setModalVisible(true);
+    }
+  }, [error]);
 
   return (
     <section className="team-section" id="user">
@@ -45,6 +64,11 @@ export default function Team() {
           ) : (
             ""
           )}
+          <ModalWindow
+            visible={modalVisible}
+            setModalVisible={modalVisibility}
+            errorMassege={[error.message]}
+          />
         </div>
       </div>
     </section>

@@ -19,6 +19,7 @@ export default function DataProivider({ children }) {
       .then((result) => {
         if (page === 1) {
           setData(result.data.users);
+          console.log(result);
           if (page !== 1) {
             setPage(1);
           }
@@ -34,7 +35,10 @@ export default function DataProivider({ children }) {
         }
         setLoading(false);
       })
-      .catch((error) => setError(error))
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      })
       .finally(() => setLoading(false));
   }
   const value = {
