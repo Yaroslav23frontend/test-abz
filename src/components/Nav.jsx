@@ -1,5 +1,6 @@
 import React from "react";
 import Img from "react-cool-img";
+import { Link } from "react-router-dom";
 import logo from "../img/Logo.svg";
 import Button from "./UI/Button";
 export default function Nav() {
@@ -8,11 +9,13 @@ export default function Nav() {
       <div className="container">
         <div className="nav-container">
           <div className="nav-logo">
-            <Img
-              className="landing-section-header-img"
-              src={logo}
-              alt="Avatar"
-            />
+            <Link to="/">
+              <Img
+                className="landing-section-header-img"
+                src={logo}
+                alt="Avatar"
+              />
+            </Link>
           </div>
           <ul className="nav-list">
             <li>

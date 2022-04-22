@@ -1,16 +1,15 @@
-import Nav from "./components/Nav";
-import Team from "./components/Team";
 import React from "react";
-import Header from "./components/Header";
-import SignUp from "./components/SignUp";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import Main from "./pages/Main";
+import NotFound from "./pages/NotFound";
 function App() {
   return (
-    <div className="App">
-      <Nav />
-      <Header />
-      <Team />
-      <SignUp />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<Main />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 export default App;

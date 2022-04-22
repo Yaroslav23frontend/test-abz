@@ -416,6 +416,7 @@ input[type="file"]::file-selector-button {
       img {
         width: 64px;
         height: auto;
+        cursor: pointer;
       }
     }
     .nav-list {
@@ -530,5 +531,25 @@ input[type="file"]::file-selector-button {
     align-items: center;
     gap: 2rem;
     margin-bottom: 10rem;
+  }
+}
+//404
+.not-found {
+  @include font-nunito-regular;
+  padding: 2rem;
+  background-color: $color-grey-medium-secondary;
+  border-radius: 10px;
+  max-width: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  h1 {
+    font-size: 4rem;
+  }
+  p {
+    font-size: 2rem;
+    margin-bottom: 1rem;
   }
 }
