@@ -54,7 +54,7 @@ export default function Team() {
                   setPage(next);
                   setLoading(true);
                 }
-                if (lastPage < page + 1) {
+                if (lastPage === page + 1) {
                   setMoreButton(false);
                 }
               }}
