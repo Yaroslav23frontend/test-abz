@@ -4,7 +4,7 @@ export default function Radio({ lableText, id, ...props }) {
     <div className="radio-button">
       <input {...props} id={id} type="radio" />
       <label className="form__label-radio" htmlFor={id}>
-        <span class="form__radio-button"></span> {lableText}
+        <span className="form__radio-button"></span> {lableText}
       </label>
     </div>
   );
