@@ -1,12 +1,17 @@
 import React from "react";
 import Button from "./UI/Button";
 import Text from "./UI/Text";
+import { motion } from "framer-motion";
 export default function Header() {
   return (
     <header className="header">
       <div className="container">
         <div className="header-container">
-          <div className="content">
+          <motion.div
+            animate={{ x: [-150, 50, 0] }}
+            transition={{ duration: 2 }}
+            className="content"
+          >
             <Text variant="h1">Test assignment for fornt-end developer</Text>
             <Text variant={"p"}>
               What difines a good front-end developer is one that has skilled
@@ -23,7 +28,7 @@ export default function Header() {
               {" "}
               Sign up
             </Button>
-          </div>
+          </motion.div>
         </div>
       </div>
     </header>

@@ -2,10 +2,25 @@ import React from "react";
 import Img from "react-cool-img";
 import imgDef from "../img/photo-cover.svg";
 import Tooltip from "./UI/Tooltip";
-
+import { motion } from "framer-motion";
 export default function Card({ data }) {
+  const list = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  };
+
+  const item = {
+    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, x: -100 },
+  };
   return (
-    <div className="card-item">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={list}
+      transition={{ duration: 1 }}
+      className="card-item"
+    >
       <div className="card-item-img">
         <Img
           style={{
@@ -31,6 +46,6 @@ export default function Card({ data }) {
 
         <li className="truncate">{data.phone}</li>
       </ul>
-    </div>
+    </motion.div>
   );
 }
